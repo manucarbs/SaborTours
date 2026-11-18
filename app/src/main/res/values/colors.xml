@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores principales SaborTours -->
+    <color name="sabor_green_dark">#1B5E44</color> <!-- Verde oscuro del botón y barra -->
+    <color name="sabor_green_light">#2A7B5A</color> <!-- Verde un poco más claro -->
+    <color name="sabor_cream">#FDF8F2</color> <!-- Fondo crema de los mockups -->
+    <color name="sabor_white">#FFFFFF</color>
+    <color name="sabor_gray_text">#6B7280</color>
+    <color name="sabor_black_text">#1F2937</color>
+
+    <!-- Modo oscuro (Dark Mode) -->
+    <color name="sabor_dark_bg">#121212</color>
+    <color name="sabor_dark_surface">#1E1E1E</color>
+</resources>
