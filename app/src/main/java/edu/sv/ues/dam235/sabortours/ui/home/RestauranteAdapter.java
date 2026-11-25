@@ -1,5 +1,6 @@
 package edu.sv.ues.dam235.sabortours.ui.home;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,11 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 import edu.sv.ues.dam235.sabortours.R;
 import edu.sv.ues.dam235.sabortours.data.model.Restaurante;
+import edu.sv.ues.dam235.sabortours.ui.DetalleRestauranteActivity;
 
 public class RestauranteAdapter extends RecyclerView.Adapter<RestauranteAdapter.ViewHolder> {
-
     private List<Restaurante> lista;
-
-    public RestauranteAdapter(List<Restaurante> lista) {
-        this.lista = lista;
-    }
+    public RestauranteAdapter(List<Restaurante> lista) { this.lista = lista; }
 
     @NonNull
     @Override
@@ -33,23 +31,27 @@ public class RestauranteAdapter extends RecyclerView.Adapter<RestauranteAdapter.
         holder.tvNombre.setText(r.getNombre());
         holder.tvCategoria.setText(r.getCategoria() + " · " + r.getPrecio());
         holder.tvRating.setText("⭐ " + r.getRating());
+        Glide.with(holder.itemView.getContext()).load(r.getImagen_url()).placeholder(android.R.drawable.ic_menu_gallery).into(holder.ivImagen);
 
-        // Cargar imagen con Glide
-        Glide.with(holder.itemView.getContext())
-                .load(r.getImagen_url())
-                .placeholder(android.R.drawable.ic_menu_gallery)
-                .into(holder.ivImagen);
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), DetalleRestauranteActivity.class);
+            intent.putExtra("id", r.getId());
+            intent.putExtra("nombre", r.getNombre());
+            intent.putExtra("categoria", r.getCategoria());
+            intent.putExtra("precio", r.getPrecio());
+            intent.putExtra("rating", r.getRating());
+            intent.putExtra("imagen", r.getImagen_url());
+            intent.putExtra("descripcion", r.getDescripcion());
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override
-    public int getItemCount() {
-        return lista.size();
-    }
+    public int getItemCount() { return lista.size(); }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivImagen;
         TextView tvNombre, tvCategoria, tvRating;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivImagen = itemView.findViewById(R.id.ivRestaurante);

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "937716207315",
+    "project_id": "sabortours-f3f80",
+    "storage_bucket": "sabortours-f3f80.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937716207315:android:ab52812f56851462e7ce26",
+        "android_client_info": {
+          "package_name": "edu.sv.ues.dam235.sabortours"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQg_oGyhpHa6GoBRSZoU0sQNGGM47D1r4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

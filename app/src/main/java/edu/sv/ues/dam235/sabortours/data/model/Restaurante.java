@@ -1,5 +1,4 @@
 package edu.sv.ues.dam235.sabortours.data.model;
-
 public class Restaurante {
     private int id;
     private String nombre;
@@ -8,8 +7,6 @@ public class Restaurante {
     private String precio;
     private double rating;
     private String imagen_url;
-
-    // Getters
     public int getId() { return id; }
     public String getNombre() { return nombre; }
     public String getDescripcion() { return descripcion; }
