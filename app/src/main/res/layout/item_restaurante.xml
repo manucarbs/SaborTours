@@ -25,7 +25,6 @@
                 android:id="@+id/tvNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nombre del Restaurante"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/sabor_black_text"/>
@@ -33,17 +32,21 @@
                 android:id="@+id/tvCategoria"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Categoría · $$"
                 android:textColor="@color/sabor_gray_text"
                 android:layout_marginTop="4dp"/>
             <TextView
                 android:id="@+id/tvRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="⭐ 4.8"
                 android:textStyle="bold"
                 android:textColor="@color/sabor_green_dark"
                 android:layout_marginTop="4dp"/>
+            <TextView
+                android:id="@+id/tvDistancia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/sabor_green_dark"
+                android:layout_marginTop="2dp"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -8,7 +8,7 @@ public class Reserva {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    public int restauranteId;
+    public String restauranteId;
     public String restauranteNombre;
     public String fecha;     // "2026-11-25"  (año-mes-día)
     public String hora;      // "19:00"       (24 horas)

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/sabor_cream"
@@ -22,31 +23,66 @@
             android:textColor="@color/sabor_gray_text"
             android:layout_marginBottom="16dp"/>
         <EditText
+            android:id="@+id/etBuscarHome"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="Buscar restaurantes o comida..."
             android:background="@drawable/bg_search"
-            android:paddingHorizontal="16dp"
-            android:layout_marginBottom="16dp"/>
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingHorizontal="16dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📍 Santa Tecla, La Libertad"
+            android:textColor="@color/sabor_green_dark"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Categorías"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginTop="12dp"/>
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp">
-            <LinearLayout
+            android:scrollbars="none"
+            android:layout_marginBottom="16dp">
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupHome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Todos" android:background="@drawable/bg_category" android:padding="12dp" android:layout_marginEnd="8dp" android:textColor="@color/sabor_white"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Típica" android:background="@drawable/bg_category" android:padding="12dp" android:layout_marginEnd="8dp" android:textColor="@color/sabor_white"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hamburguesas" android:background="@drawable/bg_category" android:padding="12dp" android:layout_marginEnd="8dp" android:textColor="@color/sabor_white"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pizza" android:background="@drawable/bg_category" android:padding="12dp" android:layout_marginEnd="8dp" android:textColor="@color/sabor_white"/>
-            </LinearLayout>
+                app:singleLine="true"
+                app:singleSelection="true"
+                app:selectionRequired="true">
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Todos"
+                    android:checked="true"/>
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Típica"/>
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hamburguesas"/>
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pizza"/>
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cafés"/>
+            </com.google.android.material.chip.ChipGroup>
         </HorizontalScrollView>
         <TextView
             android:layout_width="wrap_content"
@@ -55,6 +91,14 @@
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_marginBottom="8dp"/>
+        <TextView
+            android:id="@+id/tvVacioHome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="24dp"
+            android:textColor="@color/sabor_gray_text"
+            android:visibility="gone"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRestaurantes"
             android:layout_width="match_parent"

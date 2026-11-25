@@ -23,7 +23,6 @@
                 android:id="@+id/tvDetalleNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="La Pupusería de Ana"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="@color/sabor_black_text"/>
@@ -31,14 +30,24 @@
                 android:id="@+id/tvDetalleInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Comida salvadoreña · $$"
                 android:textColor="@color/sabor_gray_text"
                 android:layout_marginTop="4dp"/>
+            <TextView
+                android:id="@+id/tvDetalleEstado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp"/>
+            <TextView
+                android:id="@+id/tvDetalleDireccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/sabor_gray_text"
+                android:layout_marginTop="2dp"/>
             <TextView
                 android:id="@+id/tvDetalleRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="⭐ 4.8 · 124 reseñas"
                 android:textStyle="bold"
                 android:textColor="@color/sabor_green_dark"
                 android:layout_marginTop="8dp"/>
@@ -53,66 +62,28 @@
                 android:id="@+id/tvDetalleDescripcion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Disfruta de auténtica comida salvadoreña..."
                 android:textColor="@color/sabor_gray_text"
                 android:layout_marginTop="8dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Menú destacado"
+                android:text="Menú"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginTop="24dp"/>
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvMenuVacio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Este negocio aún no ha publicado su menú"
+                android:textColor="@color/sabor_gray_text"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginEnd="8dp">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:scaleType="centerCrop"
-                        android:src="@android:drawable/ic_menu_gallery"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pupusas Revueltas"
-                        android:textStyle="bold"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$0.50"
-                        android:textColor="@color/sabor_green_dark"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:scaleType="centerCrop"
-                        android:src="@android:drawable/ic_menu_gallery"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pupusas de Ayote"
-                        android:textStyle="bold"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$1.00"
-                        android:textColor="@color/sabor_green_dark"/>
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_marginTop="8dp"/>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnReservarMesa"
                 android:layout_width="match_parent"

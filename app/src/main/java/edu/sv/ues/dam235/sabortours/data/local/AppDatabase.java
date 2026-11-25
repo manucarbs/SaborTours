@@ -7,11 +7,14 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Reserva.class, Usuario.class}, version = 2, exportSchema = false)
+@Database(entities = {Reserva.class, Usuario.class, Restaurante.class, Producto.class},
+        version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ReservaDao reservaDao();
     public abstract UsuarioDao usuarioDao();
+    public abstract RestauranteDao restauranteDao();
+    public abstract ProductoDao productoDao();
 
     // Hilo de fondo para escribir en la base de datos
     public static final ExecutorService io = Executors.newSingleThreadExecutor();

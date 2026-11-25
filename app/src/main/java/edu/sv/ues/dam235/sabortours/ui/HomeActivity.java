@@ -9,12 +9,15 @@ import edu.sv.ues.dam235.sabortours.ui.explorar.ExplorarFragment;
 import edu.sv.ues.dam235.sabortours.ui.home.HomeFragment;
 import edu.sv.ues.dam235.sabortours.ui.perfil.PerfilFragment;
 import edu.sv.ues.dam235.sabortours.ui.reservas.ReservasFragment;
+import edu.sv.ues.dam235.sabortours.data.repository.RestauranteRepository;
 
 public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        // Baja los restaurantes de Firestore a Room; las pantallas se actualizan solas
+        new RestauranteRepository(this).sincronizarRestaurantes();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 

@@ -33,7 +33,7 @@ public class ReservarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservar);
 
-        int restauranteId = getIntent().getIntExtra("restaurante_id", 0);
+        String restauranteId = getIntent().getStringExtra("restaurante_id");
         String restauranteNombre = getIntent().getStringExtra("restaurante_nombre");
 
         tvPersonas = findViewById(R.id.tvPersonas);
