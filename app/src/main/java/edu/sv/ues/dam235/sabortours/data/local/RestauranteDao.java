@@ -12,6 +12,9 @@ public interface RestauranteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void guardarTodos(List<Restaurante> lista);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void guardar(Restaurante restaurante);
+
     @Query("DELETE FROM restaurantes")
     void borrarTodos();
 

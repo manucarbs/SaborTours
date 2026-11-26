@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sabor_cream">
+    android:background="@color/sabor_cream"
+    android:fitsSystemWindows="true">
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
@@ -17,6 +18,7 @@
         app:menu="@menu/bottom_nav_menu"
         app:itemIconTint="@color/sabor_green_dark"
         app:itemTextColor="@color/sabor_green_dark"
+        app:paddingBottomSystemWindowInsets="false"
         android:background="@color/sabor_white"
         app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

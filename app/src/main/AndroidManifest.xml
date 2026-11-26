@@ -30,6 +30,8 @@
         <activity android:name=".ui.negocio.NegocioActivity" android:exported="false" />
         <activity android:name=".ui.DetalleRestauranteActivity" android:exported="false" />
         <activity android:name=".ui.ReservarActivity" android:exported="false" />
-        <activity android:name=".MainActivity" android:exported="false" />
+        
+        <activity android:name=".ui.negocio.ProductoFormActivity" android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 </manifest>

@@ -1,14 +1,12 @@
 package edu.sv.ues.dam235.sabortours.ui.negocio;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import edu.sv.ues.dam235.sabortours.R;
-import edu.sv.ues.dam235.sabortours.data.local.AppDatabase;
-import edu.sv.ues.dam235.sabortours.data.local.Usuario;
-import edu.sv.ues.dam235.sabortours.util.Sesion;
+import edu.sv.ues.dam235.sabortours.data.repository.RestauranteRepository;
 
 public class NegocioActivity extends AppCompatActivity {
     @Override
@@ -16,14 +14,31 @@ public class NegocioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_negocio);
 
-        TextView tvNombre = findViewById(R.id.tvNegocioNombre);
-        findViewById(R.id.btnCerrarSesion).setOnClickListener(v -> Sesion.cerrar(this));
-
-        Context app = getApplicationContext();
+        // Baja a Room los datos más recientes del negocio y de su menú
+        RestauranteRepository repo = new RestauranteRepository(this);
+        repo.sincronizarRestaurantes();
         String uid = FirebaseAuth.getInstance().getUid();
-        AppDatabase.io.execute(() -> {
-            Usuario u = uid == null ? null : AppDatabase.get(app).usuarioDao().buscarPorId(uid);
-            if (u != null) runOnUiThread(() -> tvNombre.setText("Hola, " + u.nombre));
+        if (uid != null) repo.sincronizarProductos(uid);
+
+        BottomNavigationView nav = findViewById(R.id.bottom_navigation_negocio);
+
+        if (savedInstanceState == null) mostrar(new NegocioFragment());
+
+        nav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            Fragment f;
+            if (id == R.id.nav_negocio) f = new NegocioFragment();
+            else if (id == R.id.nav_admin_reservas) f = new AdminReservasFragment();
+            else if (id == R.id.nav_config) f = new ConfigNegocioFragment();
+            else return false;
+            mostrar(f);
+            return true;
         });
+    }
+
+    private void mostrar(Fragment f) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container_negocio, f)
+                .commit();
     }
 }
