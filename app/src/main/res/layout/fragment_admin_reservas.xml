@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/sabor_cream"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Administración"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/sabor_black_text"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/tvSinReservasNegocio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="32dp"
+        android:text="Aún no tienes reservas. Cuando un cliente reserve, aparecerá aquí."
+        android:textColor="@color/sabor_gray_text"
+        android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvReservasNegocio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>
