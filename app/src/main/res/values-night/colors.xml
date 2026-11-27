@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sabor_green_dark">#2F8F68</color>
+    <color name="sabor_green_light">#3DA378</color>
+    <color name="sabor_cream">#121212</color>
+    <color name="sabor_white">#1E1E1E</color>
+    <color name="sabor_gray_text">#A1A1AA</color>
+    <color name="sabor_black_text">#F3F4F6</color>
+
+    <bool name="barras_claras">false</bool>
+</resources>
