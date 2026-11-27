@@ -9,6 +9,7 @@ import java.util.List;
 import edu.sv.ues.dam235.sabortours.data.local.AppDatabase;
 import edu.sv.ues.dam235.sabortours.data.local.Producto;
 import edu.sv.ues.dam235.sabortours.data.local.Restaurante;
+import edu.sv.ues.dam235.sabortours.util.Lista;
 
 public class RestauranteRepository {
 
@@ -74,6 +75,9 @@ public class RestauranteRepository {
         r.numResenas = num == null ? 0 : num.intValue();
         r.latitud = d.getDouble("latitud");
         r.longitud = d.getDouble("longitud");
+        r.categorias = lista(d, "categorias");
+        r.etiquetas = lista(d, "etiquetas");
+        r.menuClaves = lista(d, "menuClaves");
         return r;
     }
 
@@ -89,5 +93,15 @@ public class RestauranteRepository {
         Boolean disp = d.getBoolean("disponible");
         p.disponible = disp == null || disp;
         return p;
+    }
+
+    // Lee un arreglo de Firestore y lo convierte al texto "a|b|c" de Room
+    private static String lista(DocumentSnapshot d, String campo) {
+        List<String> res = new ArrayList<>();
+        Object o = d.get(campo);
+        if (o instanceof List) {
+            for (Object x : (List<?>) o) if (x instanceof String) res.add((String) x);
+        }
+        return Lista.unir(res);
     }
 }

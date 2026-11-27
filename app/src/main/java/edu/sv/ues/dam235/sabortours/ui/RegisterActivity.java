@@ -22,10 +22,9 @@ import edu.sv.ues.dam235.sabortours.R;
 import edu.sv.ues.dam235.sabortours.data.local.Usuario;
 import edu.sv.ues.dam235.sabortours.util.Sesion;
 import edu.sv.ues.dam235.sabortours.util.Validador;
+import edu.sv.ues.dam235.sabortours.util.Categorias;
 
 public class RegisterActivity extends AppCompatActivity {
-
-    private static final String[] CATEGORIAS = {"Típica", "Hamburguesas", "Pizza", "Cafés"};
 
     private TextInputEditText etNombre, etCorreo, etTelefono, etPassword, etPassword2, etNegocio, etDireccion;
     private CheckBox cbNegocio;
@@ -50,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
         spCategoria = findViewById(R.id.spCategoria);
         btnRegistrar = findViewById(R.id.btnRegistrar);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, CATEGORIAS);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Categorias.nombres());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategoria.setAdapter(adapter);
 
@@ -103,12 +102,13 @@ public class RegisterActivity extends AppCompatActivity {
         batch.set(db.collection("usuarios").document(uid), perfil);
 
         if (esNegocio) {
-            String categoria = CATEGORIAS[spCategoria.getSelectedItemPosition()];
             Map<String, Object> negocio = new HashMap<>();
             negocio.put("duenoUid", uid);
             negocio.put("nombre", nombreNegocio);
-            negocio.put("categoria", categoria);
-            negocio.put("tipoComida", categoria);
+            Categorias.Categoria cat = Categorias.TODAS.get(spCategoria.getSelectedItemPosition());
+            negocio.put("categoria", cat.nombre);
+            negocio.put("categorias", java.util.Collections.singletonList(cat.id));
+            negocio.put("tipoComida", cat.nombre);
             negocio.put("descripcion", "");
             negocio.put("precio", "$$");
             negocio.put("direccion", texto(etDireccion));

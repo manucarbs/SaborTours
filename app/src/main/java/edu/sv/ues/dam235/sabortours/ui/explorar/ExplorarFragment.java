@@ -25,6 +25,8 @@ import edu.sv.ues.dam235.sabortours.util.FiltroRestaurantes;
 import java.util.HashSet;
 import java.util.Set;
 import edu.sv.ues.dam235.sabortours.data.repository.FavoritoRepository;
+import edu.sv.ues.dam235.sabortours.util.UbicacionGps;
+import edu.sv.ues.dam235.sabortours.ui.ChipsCategorias;
 
 public class ExplorarFragment extends Fragment {
 
@@ -67,6 +69,7 @@ public class ExplorarFragment extends Fragment {
         });
 
         ChipGroup grupo = view.findViewById(R.id.chipGroupCategorias);
+        ChipsCategorias.llenar(grupo);
         grupo.setOnCheckedStateChangeListener((g, ids) -> {
             if (ids.isEmpty()) return;
             Chip chip = g.findViewById(ids.get(0));
@@ -91,6 +94,8 @@ public class ExplorarFragment extends Fragment {
             soloFavoritos = marcado;
             aplicar();
         });
+
+        UbicacionGps.cambios().observe(getViewLifecycleOwner(), c -> aplicar());
 
         return view;
     }

@@ -21,6 +21,9 @@ import edu.sv.ues.dam235.sabortours.R;
 import edu.sv.ues.dam235.sabortours.data.local.Restaurante;
 import edu.sv.ues.dam235.sabortours.data.repository.RestauranteRepository;
 import edu.sv.ues.dam235.sabortours.util.FiltroRestaurantes;
+import edu.sv.ues.dam235.sabortours.ui.HomeActivity;
+import edu.sv.ues.dam235.sabortours.util.UbicacionGps;
+import edu.sv.ues.dam235.sabortours.ui.ChipsCategorias;
 
 public class HomeFragment extends Fragment {
 
@@ -60,12 +63,19 @@ public class HomeFragment extends Fragment {
         });
 
         ChipGroup grupo = view.findViewById(R.id.chipGroupHome);
+        ChipsCategorias.llenar(grupo);
         grupo.setOnCheckedStateChangeListener((g, ids) -> {
             if (ids.isEmpty()) return;
             Chip chip = g.findViewById(ids.get(0));
             categoria = chip.getText().toString();
             aplicar();
         });
+
+        // Cuando llega el GPS, las distancias y el orden se recalculan solos
+        UbicacionGps.cambios().observe(getViewLifecycleOwner(), c -> aplicar());
+        TextView tvUbicacion = view.findViewById(R.id.tvUbicacionHome);
+        UbicacionGps.etiqueta().observe(getViewLifecycleOwner(), t -> tvUbicacion.setText("📍 " + t));
+        tvUbicacion.setOnClickListener(v -> ((HomeActivity) requireActivity()).pedirUbicacion());
 
         return view;
     }

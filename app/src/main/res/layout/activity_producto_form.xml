@@ -56,6 +56,44 @@
                 android:minLines="2"
                 android:gravity="top"/>
         </com.google.android.material.textfield.TextInputLayout>
+        <ImageView
+            android:id="@+id/ivProdFoto"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="Foto del producto"
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/ic_menu_gallery"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnProdFoto"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subir fotografía"/>
+            <TextView
+                android:id="@+id/tvProdQuitarFoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:padding="8dp"
+                android:text="Quitar foto"
+                android:textColor="@color/sabor_gray_text"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvProdFotoInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:textColor="@color/sabor_green_dark"/>
+
 
         <TextView
             android:layout_width="wrap_content"

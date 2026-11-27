@@ -26,4 +26,6 @@ public interface RestauranteDao {
 
     @Query("UPDATE restaurantes SET rating = :rating, numResenas = :num WHERE id = :id")
     void actualizarRating(String id, double rating, int num);
+    @Query("UPDATE restaurantes SET menuClaves = :claves WHERE id = :id")
+    void actualizarMenuClaves(String id, String claves);
 }

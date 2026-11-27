@@ -14,6 +14,9 @@ import java.util.Map;
 import edu.sv.ues.dam235.sabortours.data.local.AppDatabase;
 import edu.sv.ues.dam235.sabortours.data.local.Producto;
 import edu.sv.ues.dam235.sabortours.data.local.Restaurante;
+import com.google.firebase.firestore.FieldValue;
+import edu.sv.ues.dam235.sabortours.util.Lista;
+import edu.sv.ues.dam235.sabortours.util.Texto;
 
 public class NegocioRepository {
 
@@ -34,7 +37,7 @@ public class NegocioRepository {
     public LiveData<List<Producto>> misProductos() { return db.productoDao().todosDelNegocio(uid()); }
 
     // ---- Productos ----
-    public void guardarProducto(Producto p) {
+    public void guardarProducto(Producto p, boolean fotoCambiada) {
         String uid = uid();
         CollectionReference col = fs.collection("restaurantes").document(uid).collection("productos");
         // Si es nuevo, Firestore genera el id aquí mismo, sin necesidad de internet
@@ -49,18 +52,25 @@ public class NegocioRepository {
         datos.put("descripcion", p.descripcion == null ? "" : p.descripcion);
         datos.put("precio", p.precio);
         datos.put("disponible", p.disponible);
+        datos.put("disponible", p.disponible);
+
+        // La foto pesa ~160 KB: solo se envía si cambió. Sin foto = se borra el campo
+        if (fotoCambiada) datos.put("imagenUrl", p.imagenUrl == null ? FieldValue.delete() : p.imagenUrl);
+
         // merge: no borra campos que este código aún no maneja (por ejemplo, la foto)
         ref.set(datos, SetOptions.merge()).addOnFailureListener(this::falloNube);   // 2. Firestore
+        actualizarMenuClaves();
     }
 
     public void eliminarProducto(Producto p) {
         AppDatabase.io.execute(() -> db.productoDao().eliminar(p.id));
         fs.collection("restaurantes").document(uid()).collection("productos").document(p.id)
                 .delete().addOnFailureListener(this::falloNube);
+        actualizarMenuClaves();
     }
 
     // ---- Datos del negocio ----
-    public void guardarNegocio(Restaurante r) {
+    public void guardarNegocio(Restaurante r, boolean fotoCambiada) {
         AppDatabase.io.execute(() -> db.restauranteDao().guardar(r));
 
         // Solo los campos que el dueño puede cambiar; rating y duenoUid no se envían
@@ -81,6 +91,10 @@ public class NegocioRepository {
             m.put("latitud", r.latitud);
             m.put("longitud", r.longitud);
         }
+        if (r.categorias != null) m.put("categorias", Lista.separar(r.categorias));
+        if (r.etiquetas != null) m.put("etiquetas", Lista.separar(r.etiquetas));
+        if (fotoCambiada) m.put("imagenUrl", r.imagenUrl == null ? FieldValue.delete() : r.imagenUrl);
+
         fs.collection("restaurantes").document(uid()).update(m).addOnFailureListener(this::falloNube);
     }
 
@@ -90,5 +104,19 @@ public class NegocioRepository {
         RestauranteRepository repo = new RestauranteRepository(app);
         repo.sincronizarRestaurantes();
         repo.sincronizarProductos(uid());
+    }
+
+    // Recalcula las palabras del menú (productos disponibles) y las sube al documento del negocio.
+    // Va en el mismo hilo de Room, así que corre después de guardar o borrar el producto.
+    private void actualizarMenuClaves() {
+        AppDatabase.io.execute(() -> {
+            String uid = uid();
+            if (uid == null) return;
+            List<String> claves = Texto.clavesDe(db.productoDao().nombresDisponibles(uid), 60);
+            db.restauranteDao().actualizarMenuClaves(uid, Lista.unir(claves));
+            Map<String, Object> m = new HashMap<>();
+            m.put("menuClaves", claves);
+            fs.collection("restaurantes").document(uid).update(m).addOnFailureListener(this::falloNube);
+        });
     }
 }

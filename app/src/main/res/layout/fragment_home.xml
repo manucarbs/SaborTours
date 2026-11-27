@@ -32,12 +32,14 @@
             android:maxLines="1"
             android:paddingHorizontal="16dp"/>
         <TextView
+            android:id="@+id/tvUbicacionHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="📍 Santa Tecla, La Libertad"
+            android:minHeight="48dp"
+            android:gravity="center_vertical"
+            android:text="📍 Santa Tecla, La Libertad (predeterminada)"
             android:textColor="@color/sabor_green_dark"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"/>
+            android:textStyle="bold"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

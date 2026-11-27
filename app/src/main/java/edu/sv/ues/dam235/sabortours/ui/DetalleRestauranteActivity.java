@@ -27,8 +27,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import edu.sv.ues.dam235.sabortours.data.local.Resena;
 import edu.sv.ues.dam235.sabortours.data.repository.ResenaRepository;
+import android.content.ActivityNotFoundException;
+import android.net.Uri;
+import android.view.MotionEvent;
+import edu.sv.ues.dam235.sabortours.data.local.Restaurante;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class DetalleRestauranteActivity extends AppCompatActivity {
+    private GoogleMap gmap;
+    private Restaurante restauranteActual;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +59,13 @@ public class DetalleRestauranteActivity extends AppCompatActivity {
         TextView tvMenuVacio = findViewById(R.id.tvMenuVacio);
         ImageView ivImagen = findViewById(R.id.ivDetalleImagen);
         MaterialButton btnReservar = findViewById(R.id.btnReservarMesa);
+
+        SupportMapFragment fragmentoMapa = SupportMapFragment.newInstance(new GoogleMapOptions().liteMode(true));
+        getSupportFragmentManager().beginTransaction().replace(R.id.contenedorMapa, fragmentoMapa).commit();
+        fragmentoMapa.getMapAsync(g -> {
+            gmap = g;
+            pintarMapa();
+        });
 
         RecyclerView rvMenu = findViewById(R.id.rvMenu);
         rvMenu.setLayoutManager(new GridLayoutManager(this, 2));
@@ -115,6 +135,7 @@ public class DetalleRestauranteActivity extends AppCompatActivity {
                     abierto ? R.color.sabor_green_dark : R.color.sabor_gray_text));
 
             Glide.with(this).load(r.imagenUrl).placeholder(android.R.drawable.ic_menu_gallery).into(ivImagen);
+            mostrarMapa(r);
 
             btnReservar.setOnClickListener(v -> {
                 Intent intent = new Intent(this, ReservarActivity.class);
@@ -168,5 +189,40 @@ public class DetalleRestauranteActivity extends AppCompatActivity {
                         }
                     });
         });
+    }
+
+    private void mostrarMapa(Restaurante r) {
+        restauranteActual = r;
+        View contenedor = findViewById(R.id.contenedorMapa);
+        View sin = findViewById(R.id.tvSinUbicacion);
+        View btnLlegar = findViewById(R.id.btnComoLlegar);
+
+        boolean hayUbicacion = r.latitud != null && r.longitud != null;
+        contenedor.setVisibility(hayUbicacion ? View.VISIBLE : View.GONE);
+        btnLlegar.setVisibility(hayUbicacion ? View.VISIBLE : View.GONE);
+        sin.setVisibility(hayUbicacion ? View.GONE : View.VISIBLE);
+        if (!hayUbicacion) return;
+
+        pintarMapa();
+
+        btnLlegar.setOnClickListener(v -> {
+            Uri uri = Uri.parse("geo:" + r.latitud + "," + r.longitud
+                    + "?q=" + r.latitud + "," + r.longitud + "(" + Uri.encode(r.nombre) + ")");
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this, "No hay una app de mapas instalada", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // El mapa y el restaurante llegan en momentos distintos; se dibuja cuando ya están los dos
+    private void pintarMapa() {
+        Restaurante r = restauranteActual;
+        if (gmap == null || r == null || r.latitud == null || r.longitud == null) return;
+        LatLng punto = new LatLng(r.latitud, r.longitud);
+        gmap.clear();
+        gmap.addMarker(new MarkerOptions().position(punto).title(r.nombre));
+        gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(punto, 16f));
     }
 }

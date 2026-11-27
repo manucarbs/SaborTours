@@ -33,7 +33,6 @@ public class NegocioFragment extends Fragment {
                 i.putExtra("descripcion", p.descripcion);
                 i.putExtra("precio", p.precio);
                 i.putExtra("disponible", p.disponible);
-                i.putExtra("imagen", p.imagenUrl);
                 startActivity(i);
             }
 

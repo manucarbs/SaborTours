@@ -28,4 +28,10 @@ public interface ProductoDao {
     // Para el dueño: todos, incluidos los que ocultó
     @Query("SELECT * FROM productos WHERE restauranteId = :restauranteId ORDER BY nombre")
     LiveData<List<Producto>> todosDelNegocio(String restauranteId);
+
+    @Query("SELECT imagenUrl FROM productos WHERE id = :id")
+    String imagenDe(String id);
+
+    @Query("SELECT nombre FROM productos WHERE restauranteId = :rid AND disponible = 1")
+    List<String> nombresDisponibles(String rid);
 }

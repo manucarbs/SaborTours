@@ -26,4 +26,8 @@ public class Restaurante {
     public int numResenas;
     public Double latitud;          // pueden ser nulos
     public Double longitud;
+
+    public String categorias = "";   // ids separados por "|": "tipica|cafes" (máx. 3)
+    public String etiquetas = "";    // palabras libres del dueño: "desayunos|pupusas"
+    public String menuClaves = "";   // palabras de los productos, para que el buscador los encuentre
 }
