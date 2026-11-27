@@ -22,6 +22,9 @@ import edu.sv.ues.dam235.sabortours.data.local.Restaurante;
 import edu.sv.ues.dam235.sabortours.data.repository.RestauranteRepository;
 import edu.sv.ues.dam235.sabortours.ui.home.RestauranteAdapter;
 import edu.sv.ues.dam235.sabortours.util.FiltroRestaurantes;
+import java.util.HashSet;
+import java.util.Set;
+import edu.sv.ues.dam235.sabortours.data.repository.FavoritoRepository;
 
 public class ExplorarFragment extends Fragment {
 
@@ -33,6 +36,8 @@ public class ExplorarFragment extends Fragment {
     private String categoria = "Todos";
     private String texto = "";
     private boolean ordenarPorRating = false;
+    private boolean soloFavoritos = false;
+    private Set<String> idsFav = new HashSet<>();
 
     @Nullable
     @Override
@@ -75,13 +80,32 @@ public class ExplorarFragment extends Fragment {
             aplicar();
         });
 
+        FavoritoRepository favRepo = new FavoritoRepository(requireContext());
+        favRepo.sincronizar();
+        favRepo.idsFavoritos().observe(getViewLifecycleOwner(), ids -> {
+            idsFav = new HashSet<>(ids);
+            aplicar();
+        });
+        Chip chipFavoritos = view.findViewById(R.id.chipFavoritos);
+        chipFavoritos.setOnCheckedChangeListener((b, marcado) -> {
+            soloFavoritos = marcado;
+            aplicar();
+        });
+
         return view;
     }
 
     private void aplicar() {
-        List<Restaurante> res = FiltroRestaurantes.aplicar(todos, categoria, texto, ordenarPorRating);
+        List<Restaurante> base = todos;
+        if (soloFavoritos) {
+            base = new ArrayList<>();
+            for (Restaurante r : todos) if (idsFav.contains(r.id)) base.add(r);
+        }
+        List<Restaurante> res = FiltroRestaurantes.aplicar(base, categoria, texto, ordenarPorRating);
         adapter.setLista(res);
-        tvVacio.setText(todos.isEmpty() ? "Aún no hay restaurantes para mostrar" : "No encontramos resultados");
+        tvVacio.setText(soloFavoritos && idsFav.isEmpty()
+                ? "Aún no tienes favoritos. Toca el corazón en un restaurante."
+                : todos.isEmpty() ? "Aún no hay restaurantes para mostrar" : "No encontramos resultados");
         tvVacio.setVisibility(res.isEmpty() ? View.VISIBLE : View.GONE);
     }
 }

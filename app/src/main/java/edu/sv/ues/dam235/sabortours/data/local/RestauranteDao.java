@@ -23,4 +23,7 @@ public interface RestauranteDao {
 
     @Query("SELECT * FROM restaurantes WHERE id = :id LIMIT 1")
     LiveData<Restaurante> porId(String id);
+
+    @Query("UPDATE restaurantes SET rating = :rating, numResenas = :num WHERE id = :id")
+    void actualizarRating(String id, double rating, int num);
 }

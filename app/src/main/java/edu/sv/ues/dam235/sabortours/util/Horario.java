@@ -15,7 +15,7 @@ public class Horario {
         return (ahora >= a && ahora < cl) || (ahora + 1440 >= a && ahora + 1440 < cl);
     }
 
-    private static int aMin(String hhmm) {
+    public static int aMin(String hhmm) {
         if (hhmm == null || !hhmm.contains(":")) return 0;
         String[] p = hhmm.split(":");
         return Integer.parseInt(p[0]) * 60 + Integer.parseInt(p[1]);

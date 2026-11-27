@@ -15,14 +15,14 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
 import edu.sv.ues.dam235.sabortours.R;
-import edu.sv.ues.dam235.sabortours.data.local.AppDatabase;
 import edu.sv.ues.dam235.sabortours.data.local.Reserva;
-import edu.sv.ues.dam235.sabortours.data.local.ReservaDao;
-import edu.sv.ues.dam235.sabortours.util.Formatos;
+import android.content.Context;
+import android.widget.Toast;
+import edu.sv.ues.dam235.sabortours.data.repository.ReservaRepository;
 
 public class ReservasFragment extends Fragment {
 
-    private ReservaDao dao;
+    private ReservaRepository repo;
     private ReservaAdapter adapter;
     private TextView tvSinReservas;
     private LiveData<List<Reserva>> fuente;
@@ -32,7 +32,8 @@ public class ReservasFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reservas, container, false);
 
-        dao = AppDatabase.get(requireContext()).reservaDao();
+        repo = new ReservaRepository(requireContext());
+        repo.sincronizarMisReservas();
         tvSinReservas = view.findViewById(R.id.tvSinReservas);
 
         RecyclerView rv = view.findViewById(R.id.rvReservas);
@@ -53,8 +54,7 @@ public class ReservasFragment extends Fragment {
     private void mostrar(boolean proximas) {
         if (fuente != null) fuente.removeObservers(getViewLifecycleOwner());
 
-        String hoy = Formatos.hoyIso();
-        fuente = proximas ? dao.proximas(hoy) : dao.historial(hoy);
+        fuente = proximas ? repo.proximas() : repo.historial();
 
         fuente.observe(getViewLifecycleOwner(), lista -> {
             adapter.setLista(lista, proximas);
@@ -64,11 +64,19 @@ public class ReservasFragment extends Fragment {
     }
 
     private void confirmarCancelacion(Reserva reserva) {
+        Context app = requireContext().getApplicationContext();
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Cancelar reserva")
                 .setMessage("¿Quieres cancelar tu reserva en " + reserva.restauranteNombre + "?")
                 .setPositiveButton("Sí, cancelar", (d, w) ->
-                        AppDatabase.io.execute(() -> dao.cancelar(reserva.id)))
+                        repo.cambiarEstado(reserva.id, "cancelada", new ReservaRepository.Resultado() {
+                            @Override public void ok() {
+                                Toast.makeText(app, "Reserva cancelada", Toast.LENGTH_SHORT).show();
+                            }
+                            @Override public void error(String mensaje) {
+                                Toast.makeText(app, mensaje, Toast.LENGTH_LONG).show();
+                            }
+                        }))
                 .setNegativeButton("No", null)
                 .show();
     }

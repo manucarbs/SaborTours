@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class Formatos {
 
@@ -27,8 +28,10 @@ public class Formatos {
         }
     }
 
-    /** Fecha de hoy como "2026-11-20" */
+    /** Fecha de hoy en El Salvador, como "2026-11-20" */
     public static String hoyIso() {
-        return new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date());
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        f.setTimeZone(TimeZone.getTimeZone("America/El_Salvador"));
+        return f.format(new Date());
     }
 }
